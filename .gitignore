@@ -11,6 +11,8 @@ master_ufo
 instance_ufos
 .ninja_log
 build.ninja
+out
+fontspector_templates
 
 # OS generated files #
 ######################
