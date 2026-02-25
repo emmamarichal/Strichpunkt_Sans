@@ -11,42 +11,44 @@ recipe:
   ../fonts/variable/StrichpunktSans[wdth,wght].ttf:
     - postprocess: exec
       exe: gftools
-      args: 'gen-stat ../fonts/variable/StrichpunktSans[wdth,wght].ttf --src "/Users/solmatas/Documentos/TYPE/Strichpunkt Sans/Strichpunkt_Sans/sources/stat.yaml" --inplace'
+      args: 'gen-stat ../fonts/variable/StrichpunktSans[wdth,wght].ttf --src sources/stat.yaml --inplace'
     - postprocess: exec
       exe: gftools
       args: 'fix-nonhinting ../fonts/variable/StrichpunktSans[wdth,wght].ttf ../fonts/variable/StrichpunktSans[wdth,wght].ttf --no-backup'
 
-  # 2) True wght-only VFs: subspace pins width (axis dropped from fvar), then stat-1axis
+  # 2) True wght-only VFs: subspace pins width, DO NOT update name table, then stat-1axis
   ../fonts/variable/StrichpunktSans[wght].ttf:
     - source: ../fonts/variable/StrichpunktSans[wdth,wght].ttf
     - operation: subspace
       axes: wdth=100
-      args: --update-name-table
+      args: --no-update-name-table
     - operation: rename
       name: Strichpunkt Sans
     - operation: fix
     - postprocess: exec
       exe: gftools
-      args: 'gen-stat ../fonts/variable/StrichpunktSans[wght].ttf --src "/Users/solmatas/Documentos/TYPE/Strichpunkt Sans/Strichpunkt_Sans/sources/stat-1axis.yaml" --inplace'
+      args: 'gen-stat ../fonts/variable/StrichpunktSans[wght].ttf --src sources/stat-1axis.yaml --inplace'
 
   ../fonts/variable/StrichpunktSansWide[wght].ttf:
     - source: ../fonts/variable/StrichpunktSans[wdth,wght].ttf
     - operation: subspace
       axes: wdth=150
+      args: --no-update-name-table
     - operation: rename
       name: Strichpunkt Sans Wide
     - operation: fix
     - postprocess: exec
       exe: gftools
-      args: 'gen-stat ../fonts/variable/StrichpunktSansWide[wght].ttf --src "/Users/solmatas/Documentos/TYPE/Strichpunkt Sans/Strichpunkt_Sans/sources/stat-1axis.yaml" --inplace'
+      args: 'gen-stat ../fonts/variable/StrichpunktSansWide[wght].ttf --src sources/stat-1axis.yaml --inplace'
 
   ../fonts/variable/StrichpunktSansExp[wght].ttf:
     - source: ../fonts/variable/StrichpunktSans[wdth,wght].ttf
     - operation: subspace
       axes: wdth=200
+      args: --no-update-name-table
     - operation: rename
       name: Strichpunkt Sans Exp
     - operation: fix
     - postprocess: exec
       exe: gftools
-      args: 'gen-stat ../fonts/variable/StrichpunktSansExp[wght].ttf --src "/Users/solmatas/Documentos/TYPE/Strichpunkt Sans/Strichpunkt_Sans/sources/stat-1axis.yaml" --inplace'
+      args: 'gen-stat ../fonts/variable/StrichpunktSansExp[wght].ttf --src sources/stat-1axis.yaml --inplace'
