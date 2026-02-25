@@ -94,7 +94,7 @@ rich==14.3.2
 rstr==3.2.2
 ruamel.yaml==0.19.1
 selenium==4.40.0
-setuptools==82.0.0
+setuptools==80.9.0
 sh==2.2.2
 shaperglot==1.2.0
 six==1.17.0
