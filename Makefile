@@ -3,6 +3,9 @@ FAMILY=$(shell python3 scripts/read-config.py --family )
 DRAWBOT_SCRIPTS=$(shell ls documentation/*.py)
 DRAWBOT_OUTPUT=$(shell ls documentation/*.py | sed 's/\.py/.png/g')
 
+FONTSPECTOR_HOME=out/fontspector-home
+FONTSPECTOR_TEMPLATES=scripts/fontspector_templates
+
 help:
 	@echo "###"
 	@echo "# Build targets for $(FAMILY)"
@@ -23,7 +26,9 @@ customize: venv
 
 build.stamp: venv sources/config.yaml $(SOURCES)
 	rm -rf fonts
-	(for config in sources/config*.yaml; do . venv/bin/activate; gftools builder $$config; done)  && touch build.stamp
+	(for config in sources/config*.yaml; do . venv/bin/activate; gftools builder $$config; done)
+	. venv/bin/activate; python3 scripts/fix_STAT_and_name_STRICH.py
+	touch build.stamp
 
 venv/touchfile: requirements.txt
 	test -d venv || python3 -m venv venv
@@ -32,7 +37,12 @@ venv/touchfile: requirements.txt
 
 test: build.stamp
 	which fontspector || (echo "fontspector not found. Please install it with 'cargo install fontspector'." && exit 1)
-	TOCHECK=$$(find fonts/variable -type f 2>/dev/null); if [ -z "$$TOCHECK" ]; then TOCHECK=$$(find fonts/ttf -type f 2>/dev/null); fi ; mkdir -p out/ out/fontspector; fontspector --profile googlefonts -l warn --full-lists --succinct --html out/fontspector/fontspector-report.html --ghmarkdown out/fontspector/fontspector-report.md --badges out/badges $$TOCHECK  || echo '::warning file=sources/config.yaml,title=fontspector failures::The fontspector QA check reported errors in your font. Please check the generated report.'
+	TOCHECK=$$(find fonts/variable -type f 2>/dev/null); if [ -z "$$TOCHECK" ]; then TOCHECK=$$(find fonts/ttf -type f 2>/dev/null); fi ; \
+		mkdir -p out/ out/fontspector out/badges "$(FONTSPECTOR_HOME)/.fontspector/templates/html" "$(FONTSPECTOR_HOME)/.fontspector/templates/markdown" ; \
+		cp -f "$(FONTSPECTOR_TEMPLATES)/html/"* "$(FONTSPECTOR_HOME)/.fontspector/templates/html/" ; \
+		cp -f "$(FONTSPECTOR_TEMPLATES)/markdown/"* "$(FONTSPECTOR_HOME)/.fontspector/templates/markdown/" ; \
+		HOME="$(FONTSPECTOR_HOME)" fontspector --skip-network --profile googlefonts -l warn --full-lists --succinct --html out/fontspector/fontspector-report.html --ghmarkdown out/fontspector/fontspector-report.md --badges out/badges $$TOCHECK \
+		|| echo '::warning file=sources/config.yaml,title=fontspector failures::The fontspector QA check reported errors in your font. Please check the generated report.'
 
 proof: venv build.stamp
 	TOCHECK=$$(find fonts/variable -type f 2>/dev/null); if [ -z "$$TOCHECK" ]; then TOCHECK=$$(find fonts/ttf -type f 2>/dev/null); fi ; . venv/bin/activate; mkdir -p out/ out/proof; diffenator2 proof $$TOCHECK -o out/proof

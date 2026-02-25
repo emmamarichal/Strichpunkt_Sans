@@ -63889,7 +63889,7 @@ instanceInterpolations = {
 "5EDB8360-C867-4183-822A-D387B21AE085" = 0.6;
 };
 isBold = 1;
-linkStyle = "Expanded Regular";
+linkStyle = "Exp Regular";
 name = "Exp Bold";
 properties = (
 {
@@ -63991,21 +63991,25 @@ value = "49EC3AAF-00BE-4B7E-9333-53C2424A5618";
 {
 disabled = 1;
 name = fileName;
-value = StrichpunktSansVF;
+value = StrichpunktVF;
 },
 {
+disabled = 1;
 name = "Axis Values";
 value = "wght; 400.0>700.0=Regular*, 500.0=Medium, 600.0=SemiBold, 700.0=Bold, 800.0=ExtraBold, 900.0=Black";
 },
 {
+disabled = 1;
 name = "Axis Values";
-value = "wdth; 100.0=Normal*, 150.0=Wide, 200.0=Extended";
+value = "wdth; 100.0=Normal*, 150.0=Wide, 200.0=Exp";
 },
 {
+disabled = 1;
 name = "Axis Values";
 value = "ital; 0.0>1.0=Roman*";
 }
 );
+exports = 0;
 name = Roman;
 properties = (
 {
