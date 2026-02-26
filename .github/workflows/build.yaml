@@ -57,8 +57,12 @@ jobs:
 
     - name: Build font
       run: make build
-    - name: Check with fontspector
-      run: make test
+    - name: Check with fontspector (per family)
+      run: |
+        fontspector --profile googlefonts --skip-network "fonts/variable/StrichpunktSans[wdth,wght].ttf"
+        fontspector --profile googlefonts --skip-network "fonts/variable/StrichpunktSans[wght].ttf"
+        fontspector --profile googlefonts --skip-network "fonts/variable/StrichpunktSansWide[wght].ttf"
+        fontspector --profile googlefonts --skip-network "fonts/variable/StrichpunktSansExp[wght].ttf"
       continue-on-error: true
     - name: Generate proofs
       run: |
