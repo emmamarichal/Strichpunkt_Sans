@@ -1,0 +1,51 @@
+sources:
+  - StrichpunktSans.glyphs
+
+familyName: "Strichpunkt Sans"
+buildStatic: true
+buildWebfont: false
+recipeProvider: googlefonts
+
+recipe:
+  # 1) Full VF (wght + wdth): add STAT + fix-nonhinting
+  ../fonts/variable/StrichpunktSans[wdth,wght].ttf:
+    - postprocess: exec
+      exe: bash
+      args: '-lc ''SRC="$$(git rev-parse --show-toplevel)/sources/stat.yaml"; gftools gen-stat ../fonts/variable/StrichpunktSans[wdth,wght].ttf --src "$$SRC" --inplace'''
+    - postprocess: exec
+      exe: gftools
+      args: 'fix-nonhinting ../fonts/variable/StrichpunktSans[wdth,wght].ttf ../fonts/variable/StrichpunktSans[wdth,wght].ttf --no-backup'
+
+  # 2) True wght-only VFs: subspace pins width, then stat-1axis. No subspace args (avoid STAT requirement).
+  ../fonts/variable/StrichpunktSans[wght].ttf:
+    - source: ../fonts/variable/StrichpunktSans[wdth,wght].ttf
+    - operation: subspace
+      axes: wdth=100
+    - operation: rename
+      name: Strichpunkt Sans
+    - operation: fix
+    - postprocess: exec
+      exe: bash
+      args: '-lc ''SRC="$$(git rev-parse --show-toplevel)/sources/stat-1axis.yaml"; gftools gen-stat ../fonts/variable/StrichpunktSans[wght].ttf --src "$$SRC" --inplace'''
+
+  ../fonts/variable/StrichpunktSansWide[wght].ttf:
+    - source: ../fonts/variable/StrichpunktSans[wdth,wght].ttf
+    - operation: subspace
+      axes: wdth=150
+    - operation: rename
+      name: Strichpunkt Sans Wide
+    - operation: fix
+    - postprocess: exec
+      exe: bash
+      args: '-lc ''SRC="$$(git rev-parse --show-toplevel)/sources/stat-1axis.yaml"; gftools gen-stat ../fonts/variable/StrichpunktSansWide[wght].ttf --src "$$SRC" --inplace'''
+
+  ../fonts/variable/StrichpunktSansExp[wght].ttf:
+    - source: ../fonts/variable/StrichpunktSans[wdth,wght].ttf
+    - operation: subspace
+      axes: wdth=200
+    - operation: rename
+      name: Strichpunkt Sans Exp
+    - operation: fix
+    - postprocess: exec
+      exe: bash
+      args: '-lc ''SRC="$$(git rev-parse --show-toplevel)/sources/stat-1axis.yaml"; gftools gen-stat ../fonts/variable/StrichpunktSansExp[wght].ttf --src "$$SRC" --inplace'''
